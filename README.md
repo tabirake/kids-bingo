@@ -2,7 +2,7 @@
 
 Webブラウザで動作する子供向けビンゴゲームアプリケーションです。
 
-https://tabirake.github.io/kids-domino/
+https://tabirake.github.io/kids-bingo/
 
 ## 機能
 
