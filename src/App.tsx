@@ -89,10 +89,23 @@ function App() {
     if (!audioCtxRef.current) {
       audioCtxRef.current = new AudioContext()
     }
+    if (audioCtxRef.current.state === 'suspended') {
+      audioCtxRef.current.resume()
+    }
     return audioCtxRef.current
   }, [])
 
+  // モバイルでSpeechSynthesisを有効化するため、ユーザー操作時に空の発話でロック解除
+  const unlockSpeech = useCallback(() => {
+    const utterance = new SpeechSynthesisUtterance('')
+    utterance.volume = 0
+    speechSynthesis.speak(utterance)
+  }, [])
+
   const startGame = () => {
+    // モバイル対応: ユーザータップのタイミングで音声系を初期化
+    getAudioCtx()
+    unlockSpeech()
     setGameStarted(true)
     setDrawnNumbers([])
     setCurrentNumber(null)
