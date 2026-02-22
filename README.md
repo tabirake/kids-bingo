@@ -2,6 +2,8 @@
 
 Webブラウザで動作する子供向けビンゴゲームアプリケーションです。
 
+https://tabirake.github.io/kids-domino/
+
 ## 機能
 
 - 数字の範囲を自由に設定可能
