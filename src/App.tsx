@@ -76,6 +76,7 @@ function App() {
   const [drawnNumbers, setDrawnNumbers] = useState<number[]>(saved?.drawnNumbers ?? [])
   const [isRolling, setIsRolling] = useState(false)
   const [isRevealed, setIsRevealed] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
   const audioCtxRef = useRef<AudioContext | null>(null)
 
   // 状態が変わるたびにlocalStorageに保存
@@ -236,10 +237,21 @@ function App() {
             ))}
           </div>
         </div>
-        <button className="end-btn" onClick={endGame}>
+        <button className="end-btn" onClick={() => setShowConfirm(true)}>
           終了
         </button>
       </div>
+      {showConfirm && (
+        <div className="modal-overlay" onClick={() => setShowConfirm(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <p>ゲームを終了しますか？</p>
+            <div className="modal-buttons">
+              <button className="modal-yes" onClick={endGame}>はい</button>
+              <button className="modal-no" onClick={() => setShowConfirm(false)}>いいえ</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
