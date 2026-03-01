@@ -78,6 +78,7 @@ function App() {
   const [isStopping, setIsStopping] = useState(false)
   const [isRevealed, setIsRevealed] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
+  const [showFullHistory, setShowFullHistory] = useState(false)
   const audioCtxRef = useRef<AudioContext | null>(null)
   const stopRequestedRef = useRef(false)
   const finalNumberRef = useRef<number | null>(null)
@@ -260,7 +261,14 @@ function App() {
           </button>
         )}
         <div className="history">
-          <h2>でたすうじ ({drawnNumbers.length}こ)</h2>
+          <div className="history-header">
+            <h2>でたすうじ ({drawnNumbers.length}こ)</h2>
+            {drawnNumbers.length > 0 && (
+              <button className="fullscreen-btn" onClick={() => setShowFullHistory(true)}>
+                おおきくみる
+              </button>
+            )}
+          </div>
           <div className="drawn-numbers">
             {drawnNumbers.map((num) => (
               <span key={num} className="drawn-number">
@@ -273,6 +281,23 @@ function App() {
           おわる
         </button>
       </div>
+      {showFullHistory && (
+        <div className="fullscreen-overlay" onClick={() => setShowFullHistory(false)}>
+          <div className="fullscreen-history" onClick={(e) => e.stopPropagation()}>
+            <h2>でたすうじ ({drawnNumbers.length}こ)</h2>
+            <div className="fullscreen-numbers">
+              {drawnNumbers.map((num) => (
+                <span key={num} className="fullscreen-number">
+                  {num}
+                </span>
+              ))}
+            </div>
+            <button className="fullscreen-close" onClick={() => setShowFullHistory(false)}>
+              とじる
+            </button>
+          </div>
+        </div>
+      )}
       {showConfirm && (
         <div className="modal-overlay" onClick={() => setShowConfirm(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>

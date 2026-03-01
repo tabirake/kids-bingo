@@ -194,11 +194,102 @@ h1 {
   width: 100%;
 }
 
-.history h2 {
-  color: #333;
+.history-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 1rem;
-  text-align: center;
+}
+
+.history-header h2 {
+  color: #333;
   font-size: 2.2rem;
+  margin: 0;
+}
+
+.fullscreen-btn {
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: 2px solid #667eea;
+  border-radius: 50px;
+  background: white;
+  color: #667eea;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fullscreen-btn:hover {
+  background: #667eea;
+  color: white;
+}
+
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(102, 126, 234, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+.fullscreen-history {
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: center;
+  padding: 2rem;
+}
+
+.fullscreen-history h2 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.fullscreen-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.fullscreen-number {
+  display: inline-block;
+  min-width: 90px;
+  padding: 1rem 1.2rem;
+  background: white;
+  color: #667eea;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.fullscreen-close {
+  padding: 0.8rem 2.5rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border: 2px solid white;
+  border-radius: 50px;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fullscreen-close:hover {
+  background: white;
+  color: #667eea;
 }
 
 .drawn-numbers {
