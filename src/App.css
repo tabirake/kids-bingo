@@ -68,19 +68,40 @@ h1 {
 .game {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
   align-items: center;
+}
+
+.game-main {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+.slot-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.slot-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .current-number {
   width: 100%;
-  min-height: 40vh;
+  min-height: 35vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   border-radius: 30px;
-  padding: 3rem;
+  padding: 2rem;
 }
 
 .number-display {
@@ -191,21 +212,23 @@ h1 {
 }
 
 .history {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
 }
 
 .history-header {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .history-header h2 {
-  color: #333;
-  font-size: 2.2rem;
+  color: #999;
+  font-size: 1rem;
   margin: 0;
+  font-weight: normal;
 }
 
 .fullscreen-btn {
@@ -295,22 +318,22 @@ h1 {
 .drawn-numbers {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.7rem;
+  gap: 0.4rem;
   justify-content: center;
-  padding: 1.2rem;
+  padding: 0.8rem;
   background: #f5f5f5;
   border-radius: 10px;
 }
 
 .drawn-number {
   display: inline-block;
-  min-width: 70px;
-  padding: 0.7rem 1rem;
+  min-width: 45px;
+  padding: 0.3rem 0.5rem;
   background: #667eea;
   color: white;
-  border-radius: 12px;
+  border-radius: 8px;
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   font-weight: bold;
 }
 
@@ -422,5 +445,9 @@ h1 {
   .end-btn {
     font-size: 1.1rem;
     padding: 0.7rem 2rem;
+  }
+
+  .game-main {
+    flex-direction: column;
   }
 }
