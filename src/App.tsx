@@ -256,7 +256,7 @@ function App() {
           </button>
         ) : (
           <button className="draw-btn" onClick={drawNumber}>
-            数字を引く
+            すうじをひく
           </button>
         )}
         <div className="history">
@@ -270,13 +270,13 @@ function App() {
           </div>
         </div>
         <button className="end-btn" onClick={() => setShowConfirm(true)}>
-          終了
+          おわる
         </button>
       </div>
       {showConfirm && (
         <div className="modal-overlay" onClick={() => setShowConfirm(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <p>ゲームを終了しますか？</p>
+            <p>ゲームをおわりにする？</p>
             <div className="modal-buttons">
               <button className="modal-yes" onClick={endGame}>はい</button>
               <button className="modal-no" onClick={() => setShowConfirm(false)}>いいえ</button>
