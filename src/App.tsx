@@ -72,6 +72,8 @@ function App() {
   const [gameStarted, setGameStarted] = useState(saved?.gameStarted ?? false)
   const [minNumber, setMinNumber] = useState(saved?.minNumber ?? 1)
   const [maxNumber, setMaxNumber] = useState(saved?.maxNumber ?? 75)
+  const [minInput, setMinInput] = useState(String(saved?.minNumber ?? 1))
+  const [maxInput, setMaxInput] = useState(String(saved?.maxNumber ?? 75))
   const [currentNumber, setCurrentNumber] = useState<number | null>(saved?.currentNumber ?? null)
   const [drawnNumbers, setDrawnNumbers] = useState<number[]>(saved?.drawnNumbers ?? [])
   const [isRolling, setIsRolling] = useState(false)
@@ -209,10 +211,14 @@ function App() {
             <label>
               最小値:
               <input
-                type="number"
-                value={minNumber}
-                onChange={(e) => setMinNumber(Number(e.target.value))}
-                min="1"
+                type="text"
+                inputMode="numeric"
+                value={minInput}
+                onChange={(e) => {
+                  const v = e.target.value.replace(/[^0-9]/g, '')
+                  setMinInput(v)
+                  if (v !== '') setMinNumber(Number(v))
+                }}
               />
             </label>
           </div>
@@ -220,10 +226,14 @@ function App() {
             <label>
               最大値:
               <input
-                type="number"
-                value={maxNumber}
-                onChange={(e) => setMaxNumber(Number(e.target.value))}
-                min={minNumber + 1}
+                type="text"
+                inputMode="numeric"
+                value={maxInput}
+                onChange={(e) => {
+                  const v = e.target.value.replace(/[^0-9]/g, '')
+                  setMaxInput(v)
+                  if (v !== '') setMaxNumber(Number(v))
+                }}
               />
             </label>
           </div>
