@@ -43,6 +43,7 @@ h1 {
 
 .start-btn,
 .draw-btn,
+.stop-btn,
 .end-btn {
   padding: 1.2rem 4rem;
   font-size: 2rem;
@@ -163,15 +164,30 @@ h1 {
   color: white;
 }
 
-.draw-btn:hover:not(.disabled) {
+.draw-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 5px 20px rgba(67, 233, 123, 0.4);
 }
 
-.draw-btn.disabled {
+.stop-btn {
+  background: linear-gradient(135deg, #ff512f 0%, #f09819 100%);
+  color: white;
+  animation: pulse 0.6s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.stop-btn:hover:not(.disabled) {
+  box-shadow: 0 5px 20px rgba(255, 81, 47, 0.4);
+}
+
+.stop-btn.disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  background: linear-gradient(135deg, #a0a0a0 0%, #c0c0c0 100%);
+  animation: none;
 }
 
 .history {
@@ -313,6 +329,7 @@ h1 {
 
   .start-btn,
   .draw-btn,
+  .stop-btn,
   .end-btn {
     font-size: 1.5rem;
     padding: 1rem 3rem;

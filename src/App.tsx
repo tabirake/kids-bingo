@@ -75,9 +75,12 @@ function App() {
   const [currentNumber, setCurrentNumber] = useState<number | null>(saved?.currentNumber ?? null)
   const [drawnNumbers, setDrawnNumbers] = useState<number[]>(saved?.drawnNumbers ?? [])
   const [isRolling, setIsRolling] = useState(false)
+  const [isStopping, setIsStopping] = useState(false)
   const [isRevealed, setIsRevealed] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const audioCtxRef = useRef<AudioContext | null>(null)
+  const stopRequestedRef = useRef(false)
+  const finalNumberRef = useRef<number | null>(null)
 
   // 状態が変わるたびにlocalStorageに保存
   useEffect(() => {
@@ -113,6 +116,36 @@ function App() {
     setIsRevealed(false)
   }
 
+  const revealNumber = useCallback((finalNumber: number, audioCtx: AudioContext) => {
+    // 減速して止まる演出
+    setIsStopping(true)
+    const slowSteps = 8
+    let step = 0
+
+    const slowDown = () => {
+      if (step < slowSteps) {
+        const randomDisplay = minNumber + Math.floor(Math.random() * (maxNumber - minNumber + 1))
+        setCurrentNumber(randomDisplay)
+        playTickSound(audioCtx, 15 + step)
+        const delay = 100 + step * 50
+        step++
+        setTimeout(slowDown, delay)
+      } else {
+        setCurrentNumber(finalNumber)
+        setDrawnNumbers(prev => [...prev, finalNumber])
+        setIsRolling(false)
+        setIsStopping(false)
+        setIsRevealed(true)
+        stopRequestedRef.current = false
+        playFinalSound(audioCtx)
+        speakNumber(finalNumber)
+        setTimeout(() => setIsRevealed(false), 1000)
+      }
+    }
+
+    slowDown()
+  }, [minNumber, maxNumber])
+
   const drawNumber = () => {
     if (isRolling) return
 
@@ -127,41 +160,34 @@ function App() {
     }
 
     const finalNumber = availableNumbers[Math.floor(Math.random() * availableNumbers.length)]
+    finalNumberRef.current = finalNumber
     const audioCtx = getAudioCtx()
 
     setIsRolling(true)
     setIsRevealed(false)
+    stopRequestedRef.current = false
 
-    // スロット演出: 数字を高速で切り替えて、徐々に遅くする
-    const totalSteps = 20
-    let step = 0
-
+    // スロット演出: ストップが押されるまで回り続ける
+    let tick = 0
     const roll = () => {
-      if (step < totalSteps) {
-        // ランダムな数字を表示
-        const randomDisplay = minNumber + Math.floor(Math.random() * (maxNumber - minNumber + 1))
-        setCurrentNumber(randomDisplay)
-        playTickSound(audioCtx, step)
-
-        // 徐々に遅くする (50ms -> 300ms)
-        const delay = 50 + (step / totalSteps) * 250
-        step++
-        setTimeout(roll, delay)
-      } else {
-        // 最終的な数字を表示
-        setCurrentNumber(finalNumber)
-        setDrawnNumbers(prev => [...prev, finalNumber])
-        setIsRolling(false)
-        setIsRevealed(true)
-        playFinalSound(audioCtx)
-        speakNumber(finalNumber)
-
-        // アニメーションフラグを少し遅れてリセット
-        setTimeout(() => setIsRevealed(false), 1000)
+      if (stopRequestedRef.current) {
+        revealNumber(finalNumber, audioCtx)
+        return
       }
+      const randomDisplay = minNumber + Math.floor(Math.random() * (maxNumber - minNumber + 1))
+      setCurrentNumber(randomDisplay)
+      playTickSound(audioCtx, tick % 10)
+      tick++
+      setTimeout(roll, 80)
     }
 
     roll()
+  }
+
+  const stopRoll = () => {
+    if (isRolling && !isStopping) {
+      stopRequestedRef.current = true
+    }
   }
 
   const endGame = () => {
@@ -220,13 +246,19 @@ function App() {
             <div className="number-placeholder">ボタンを押してね！</div>
           )}
         </div>
-        <button
-          className={`draw-btn ${isRolling ? 'disabled' : ''}`}
-          onClick={drawNumber}
-          disabled={isRolling}
-        >
-          {isRolling ? '抽選中...' : '数字を引く'}
-        </button>
+        {isRolling ? (
+          <button
+            className={`stop-btn ${isStopping ? 'disabled' : ''}`}
+            onClick={stopRoll}
+            disabled={isStopping}
+          >
+            {isStopping ? 'とまります...' : 'ストップ！'}
+          </button>
+        ) : (
+          <button className="draw-btn" onClick={drawNumber}>
+            数字を引く
+          </button>
+        )}
         <div className="history">
           <h2>でたすうじ ({drawnNumbers.length}こ)</h2>
           <div className="drawn-numbers">
