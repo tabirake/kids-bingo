@@ -238,48 +238,54 @@ function App() {
     <div className="container">
       <h1>キッズビンゴ</h1>
       <div className="game">
-        <div className={`current-number ${isRolling ? 'rolling' : ''} ${isRevealed ? 'revealed' : ''}`}>
-          {currentNumber !== null ? (
-            <div className={`number-display ${isRolling ? 'slot-spin' : ''} ${isRevealed ? 'final-pop' : ''}`}>
-              {currentNumber}
+        <div className="game-main">
+          <div className="slot-area">
+            <div className={`current-number ${isRolling ? 'rolling' : ''} ${isRevealed ? 'revealed' : ''}`}>
+              {currentNumber !== null ? (
+                <div className={`number-display ${isRolling ? 'slot-spin' : ''} ${isRevealed ? 'final-pop' : ''}`}>
+                  {currentNumber}
+                </div>
+              ) : (
+                <div className="number-placeholder">ボタンを押してね！</div>
+              )}
             </div>
-          ) : (
-            <div className="number-placeholder">ボタンを押してね！</div>
-          )}
-        </div>
-        {isRolling ? (
-          <button
-            className={`stop-btn ${isStopping ? 'disabled' : ''}`}
-            onClick={stopRoll}
-            disabled={isStopping}
-          >
-            {isStopping ? 'とまります...' : 'ストップ！'}
-          </button>
-        ) : (
-          <button className="draw-btn" onClick={drawNumber}>
-            すうじをひく
-          </button>
-        )}
-        <div className="history">
-          <div className="history-header">
-            <h2>でたすうじ ({drawnNumbers.length}こ)</h2>
-            {drawnNumbers.length > 0 && (
-              <button className="fullscreen-btn" onClick={() => setShowFullHistory(true)}>
-                おおきくみる
+            <div className="slot-buttons">
+              {isRolling ? (
+                <button
+                  className={`stop-btn ${isStopping ? 'disabled' : ''}`}
+                  onClick={stopRoll}
+                  disabled={isStopping}
+                >
+                  {isStopping ? 'とまります...' : 'ストップ！'}
+                </button>
+              ) : (
+                <button className="draw-btn" onClick={drawNumber}>
+                  すうじをひく
+                </button>
+              )}
+              <button className="end-btn" onClick={() => setShowConfirm(true)}>
+                おわる
               </button>
-            )}
+            </div>
           </div>
-          <div className="drawn-numbers">
-            {drawnNumbers.map((num) => (
-              <span key={num} className="drawn-number">
-                {num}
-              </span>
-            ))}
+          <div className="history">
+            <div className="history-header">
+              <h2>でたすうじ ({drawnNumbers.length}こ)</h2>
+              {drawnNumbers.length > 0 && (
+                <button className="fullscreen-btn" onClick={() => setShowFullHistory(true)}>
+                  おおきくみる
+                </button>
+              )}
+            </div>
+            <div className="drawn-numbers">
+              {drawnNumbers.map((num) => (
+                <span key={num} className="drawn-number">
+                  {num}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-        <button className="end-btn" onClick={() => setShowConfirm(true)}>
-          おわる
-        </button>
       </div>
       {showFullHistory && (
         <div className="fullscreen-overlay" onClick={() => setShowFullHistory(false)}>

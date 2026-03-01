@@ -15,10 +15,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1.5rem;
+  padding: 0.5rem;
 }
 
 #root {
   width: 100%;
-  max-width: 1200px;
 }
