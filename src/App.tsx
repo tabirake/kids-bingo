@@ -196,6 +196,7 @@ function App() {
     setCurrentNumber(null)
     setDrawnNumbers([])
     setIsRevealed(false)
+    setShowConfirm(false)
     clearState()
   }
 
@@ -268,22 +269,20 @@ function App() {
               </button>
             </div>
           </div>
-          <div className="history">
-            <div className="history-header">
-              <h2>でたすうじ ({drawnNumbers.length}こ)</h2>
-              {drawnNumbers.length > 0 && (
-                <button className="fullscreen-btn" onClick={() => setShowFullHistory(true)}>
-                  おおきくみる
-                </button>
-              )}
-            </div>
-            <div className="drawn-numbers">
-              {drawnNumbers.map((num) => (
-                <span key={num} className="drawn-number">
-                  {num}
-                </span>
-              ))}
-            </div>
+          <div className="history-header">
+            <h2>でたすうじ ({drawnNumbers.length}こ)</h2>
+            {drawnNumbers.length > 0 && (
+              <button className="fullscreen-btn" onClick={() => setShowFullHistory(true)}>
+                おおきくみる
+              </button>
+            )}
+          </div>
+          <div className="drawn-numbers">
+            {drawnNumbers.map((num) => (
+              <span key={num} className="drawn-number">
+                {num}
+              </span>
+            ))}
           </div>
         </div>
       </div>
