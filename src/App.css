@@ -9,8 +9,8 @@
 h1 {
   text-align: center;
   color: #667eea;
-  font-size: 4rem;
-  margin-bottom: 2rem;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 .setup {
@@ -45,8 +45,8 @@ h1 {
 .draw-btn,
 .stop-btn,
 .end-btn {
-  padding: 1.2rem 4rem;
-  font-size: 2rem;
+  padding: 0.8rem 2.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
   border: none;
   border-radius: 50px;
@@ -316,7 +316,7 @@ h1 {
   }
 
   h1 {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
   }
 
   .number-display {
@@ -331,7 +331,7 @@ h1 {
   .draw-btn,
   .stop-btn,
   .end-btn {
-    font-size: 1.5rem;
-    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    padding: 0.7rem 2rem;
   }
 }
