@@ -228,7 +228,7 @@ function App() {
           {isRolling ? '抽選中...' : '数字を引く'}
         </button>
         <div className="history">
-          <h2>出た数字 ({drawnNumbers.length}個)</h2>
+          <h2>でたすうじ ({drawnNumbers.length}こ)</h2>
           <div className="drawn-numbers">
             {drawnNumbers.map((num) => (
               <span key={num} className="drawn-number">
