@@ -350,6 +350,12 @@ h1 {
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.drawn-number:active {
+  transform: scale(0.95);
 }
 
 .end-btn {

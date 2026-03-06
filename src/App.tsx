@@ -289,7 +289,7 @@ function App() {
           </div>
           <div className="drawn-numbers">
             {drawnNumbers.map((num) => (
-              <span key={num} className="drawn-number">
+              <span key={num} className="drawn-number" onClick={() => speakNumber(num)}>
                 {num}
               </span>
             ))}
