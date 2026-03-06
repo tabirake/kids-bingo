@@ -39,6 +39,57 @@ function playFinalSound(audioCtx: AudioContext) {
   }
 }
 
+function playBingoFanfare(audioCtx: AudioContext) {
+  // ファンファーレ: ドレミファソラシド→和音
+  const melody = [
+    { freq: 523.25, time: 0, dur: 0.15 },    // C5
+    { freq: 587.33, time: 0.12, dur: 0.15 },  // D5
+    { freq: 659.25, time: 0.24, dur: 0.15 },  // E5
+    { freq: 698.46, time: 0.36, dur: 0.15 },  // F5
+    { freq: 783.99, time: 0.48, dur: 0.15 },  // G5
+    { freq: 880.00, time: 0.60, dur: 0.15 },  // A5
+    { freq: 987.77, time: 0.72, dur: 0.15 },  // B5
+    { freq: 1046.50, time: 0.84, dur: 0.4 },  // C6
+  ]
+  const now = audioCtx.currentTime
+  for (const note of melody) {
+    const osc = audioCtx.createOscillator()
+    const gain = audioCtx.createGain()
+    osc.connect(gain)
+    gain.connect(audioCtx.destination)
+    osc.frequency.value = note.freq
+    osc.type = 'square'
+    gain.gain.setValueAtTime(0.12, now + note.time)
+    gain.gain.exponentialRampToValueAtTime(0.001, now + note.time + note.dur)
+    osc.start(now + note.time)
+    osc.stop(now + note.time + note.dur)
+  }
+  // 最後に派手な和音
+  const chordTime = now + 1.0
+  const chord = [523.25, 659.25, 783.99, 1046.50]
+  for (const freq of chord) {
+    const osc = audioCtx.createOscillator()
+    const gain = audioCtx.createGain()
+    osc.connect(gain)
+    gain.connect(audioCtx.destination)
+    osc.frequency.value = freq
+    osc.type = 'triangle'
+    gain.gain.setValueAtTime(0.15, chordTime)
+    gain.gain.exponentialRampToValueAtTime(0.001, chordTime + 1.5)
+    osc.start(chordTime)
+    osc.stop(chordTime + 1.5)
+  }
+}
+
+function speakBingo() {
+  const utterance = new SpeechSynthesisUtterance('ビンゴがでました！おめでとう！')
+  utterance.lang = 'ja-JP'
+  utterance.rate = 0.85
+  utterance.pitch = 1.4
+  utterance.volume = 1
+  speechSynthesis.speak(utterance)
+}
+
 const STORAGE_KEY = 'kids-bingo-state'
 
 interface SavedState {
@@ -81,6 +132,7 @@ function App() {
   const [isRevealed, setIsRevealed] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [showFullHistory, setShowFullHistory] = useState(false)
+  const [showBingo, setShowBingo] = useState(false)
   const audioCtxRef = useRef<AudioContext | null>(null)
   const stopRequestedRef = useRef(false)
   const finalNumberRef = useRef<number | null>(null)
@@ -193,6 +245,13 @@ function App() {
     }
   }
 
+  const triggerBingo = () => {
+    setShowBingo(true)
+    const audioCtx = getAudioCtx()
+    playBingoFanfare(audioCtx)
+    setTimeout(() => speakBingo(), 1200)
+  }
+
   const endGame = () => {
     setGameStarted(false)
     setCurrentNumber(null)
@@ -274,6 +333,9 @@ function App() {
                   すうじをひく
                 </button>
               )}
+              <button className="bingo-btn" onClick={triggerBingo}>
+                ビンゴ！
+              </button>
               <button className="end-btn" onClick={() => setShowConfirm(true)}>
                 おわる
               </button>
@@ -308,6 +370,27 @@ function App() {
               ))}
             </div>
             <button className="fullscreen-close" onClick={() => setShowFullHistory(false)}>
+              とじる
+            </button>
+          </div>
+        </div>
+      )}
+      {showBingo && (
+        <div className="bingo-overlay" onClick={() => setShowBingo(false)}>
+          <div className="bingo-celebration" onClick={(e) => e.stopPropagation()}>
+            <div className="bingo-confetti">
+              {Array.from({ length: 30 }, (_, i) => (
+                <div key={i} className="confetti-piece" style={{
+                  left: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 0.5}s`,
+                  animationDuration: `${1.5 + Math.random() * 2}s`,
+                  backgroundColor: ['#ff6b6b', '#ffd700', '#43e97b', '#667eea', '#f093fb', '#38f9d7', '#ff512f'][i % 7],
+                }} />
+              ))}
+            </div>
+            <div className="bingo-text">ビンゴ！</div>
+            <div className="bingo-sub">おめでとう！！</div>
+            <button className="bingo-close" onClick={() => setShowBingo(false)}>
               とじる
             </button>
           </div>
